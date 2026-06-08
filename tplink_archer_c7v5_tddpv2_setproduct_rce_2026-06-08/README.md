@@ -1,42 +1,124 @@
-# TP-Link Archer C7 V5 TDDPv2 setProductName RCE CVE 材料包
+# TP-Link Archer C7(US) V5 TDDPv2 `setProductName` OS Command Injection
 
-日期：2026-06-08
+Date prepared: 2026-06-08
 
-## 结论
+## Summary
 
-本目录整理的是 TP-Link Archer C7(US) V5 固件 `Archer C7(US)_V5.0_220715` 中 `/usr/bin/tddp` 的 TDDPv2 `0x52 setProductName` 命令注入 RCE 材料。
+This directory contains materials prepared for a CVE assignment request concerning a suspected OS command injection vulnerability in TP-Link Archer C7(US) V5 firmware `Archer C7(US)_V5.0_220715`.
 
-当前证据强度：高。
+The affected component is:
 
-提交价值：有，但建议以“疑似新 CVE/新变体”提交，并在材料中主动说明与 `CVE-2021-42232`、`CVE-2025-9377` 的差异。当前未发现公开 CVE/PoC 完全覆盖 `Archer C7(US) V5 220715 + TDDPv2 0x52 setProductName/product_name` 这条链路。
+```text
+/usr/bin/tddp
+```
 
-主要保守点：当前动态复现在本地授权仿真环境完成。由于 Docker/WSL 环境缺少 MIPS `binfmt_misc`，复现脚本在隔离 rootfs 副本中使用了 host-exec bridge 转发 `/bin/sh -c` 到原始 MIPS busybox shell。`/usr/bin/tddp` 二进制未修改。正式对外披露前，建议补充真机或完整系统 QEMU 复现。
+The observed vulnerable path is:
 
-## 文件说明
+```text
+TDDPv2 spCmd -> command byte 0x52 -> setProductName -> product_name command template -> tddp_execCmd -> /bin/sh -c
+```
 
-- `cve_submission_draft.md`：可直接改写为 CNA/厂商提交文本。
-- `technical_report.md`：技术细节、根因、影响与证据摘要。
-- `poc_reproduction.md`：本地授权仿真复现说明。
-- `duplicate_check.md`：公开 CVE/PoC 重复性检查。
-- `evidence_index.md`：证据文件索引和哈希。
-- `evidence_hostexec_bridge.txt`：最新可复现动态证据。
-- `verify_tddpv2_hostexec_bridge.sh`：动态复现脚本。
-- `sh_bridge.c`：host-exec bridge 源码。
-- `static_setproduct_402f40_403120.txt`：`setProductName` 关键反汇编片段。
-- `static_spcmd_404180_404360.txt`：TDDPv2 `spCmd` 分发关键反汇编片段。
+The issue appears to result from incomplete shell metacharacter neutralization before attacker-controlled product name data is embedded into shell command strings.
 
-## 建议提交定位
+## Affected Version
 
-建议标题：
+Verified firmware image:
 
-`TP-Link Archer C7(US) V5 firmware 220715 TDDPv2 setProductName command injection`
+```text
+Archer C7(US)_V5.0_220715
+c7v5_us-up-ver1-2-1-P1[20220715-rel19099]_2022-07-15_17.44.43
+```
 
-建议弱点类型：
+Target binary SHA256:
 
-`CWE-78: Improper Neutralization of Special Elements used in an OS Command`
+```text
+6ff6ff1fd2e05fa33854e8995906ac7f5df7c9e2612439bfd199948f61b308db  /usr/bin/tddp
+```
 
-建议 CVSS 初评：
+## Validation Status
 
-`CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H`，基础分 8.8。
+The issue has been reproduced in a local, authorized firmware-emulation laboratory environment using the original `/usr/bin/tddp` binary extracted from the firmware image. The target binary was not modified.
 
-若厂商确认 TDDPv2 服务可从普通 LAN 网络直接访问且协议密钥/认证不构成有效权限要求，可讨论调整为 `AV:N`，可能达到 9.8。
+Full real-device reproduction is not yet completed. The emulated environment strongly indicates the vulnerability exists, and additional real-device evidence can be provided upon request.
+
+Important limitation:
+
+The dynamic reproduction was performed in a Docker/WSL-based local firmware-emulation environment. Because this environment does not provide MIPS `binfmt_misc` support for child process execution, `/bin/sh` inside the isolated rootfs was temporarily replaced with a host-exec bridge. The bridge records argv and forwards execution to the original MIPS busybox shell through `qemu-mips-static`; it does not directly create the proof marker file.
+
+## Severity Assessment
+
+Suggested CVSS v3.1:
+
+```text
+CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H = 8.8 High
+```
+
+This score is conservative because TDDPv2 network exposure and authentication assumptions should be confirmed by the vendor or on physical hardware.
+
+Environmental score may vary. If TDDPv2 is reachable from WAN, adjust to `AV:N`, which may result in `9.8 Critical`.
+
+## Duplicate Check
+
+No exact public duplicate was found for the following combination:
+
+```text
+TP-Link Archer C7(US) V5 firmware 220715
+/usr/bin/tddp
+TDDPv2 command byte 0x52
+setProductName/product_name
+shell command substitution command injection
+```
+
+Related but not exact duplicate:
+
+- `CVE-2021-42232`: TP-Link Archer A7(US) V5 `/usr/bin/tddp` command injection in a different tftp parameter handling path.
+- `CVE-2025-9377`: TP-Link Archer C7(EU) V2 authenticated RCE through the Parental Control page, not this TDDPv2 `setProductName` path.
+
+## Files
+
+Core reports:
+
+```text
+technical_report.md
+poc_reproduction.md
+duplicate_check.md
+evidence_index.md
+cve_submission_draft.md
+```
+
+Email materials:
+
+```text
+email_body.txt
+email_submission_report.md
+```
+
+Evidence:
+
+```text
+evidence_hostexec_bridge.txt
+static_setproduct_402f40_403120.txt
+static_spcmd_404180_404360.txt
+screenshots/real1.png
+screenshots/real2.png
+screenshots/real_01_terminal_reproduction_output.txt
+```
+
+Auxiliary reproduction files:
+
+```text
+verify_tddpv2_hostexec_bridge.sh
+sh_bridge.c
+capture_real_repro_screenshots.ps1
+```
+
+## Integrity
+
+Repository-level file hashes are available in:
+
+```text
+../SHA256SUMS.txt
+```
+
+Key evidence hashes are also included in `email_body.txt`.
+

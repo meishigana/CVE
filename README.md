@@ -1,16 +1,32 @@
-﻿# CVE Materials
+# Vulnerability Disclosure Materials
 
-This repository stores vulnerability disclosure materials prepared for CVE submissions.
+This repository contains vulnerability research and coordinated disclosure materials prepared for CVE assignment requests.
 
-## Current Entry
+The materials are intended to help vendors, CNAs, and security coordinators review reported issues. Each entry is organized as a separate directory containing a technical report, reproduction notes, duplicate-check notes, evidence references, and integrity hashes.
 
-- TP-Link Archer C7(US) V5 firmware 220715 TDDPv2 setProductName OS command injection
-- Directory: `tplink_archer_c7v5_tddpv2_setproduct_rce_2026-06-08/`
+## Current Reports
 
-## Integrity
+| Product | Vulnerability | Status | Directory |
+| --- | --- | --- | --- |
+| TP-Link Archer C7(US) V5 firmware 220715 | TDDPv2 `setProductName` OS command injection | Prepared for CVE request | `tplink_archer_c7v5_tddpv2_setproduct_rce_2026-06-08/` |
 
-File hashes are listed in `SHA256SUMS.txt`.
+## Repository Integrity
 
-## Disclosure Note
+SHA256 hashes for repository files are listed in:
 
-Materials are intended for coordinated vulnerability disclosure. Do not use them against systems without authorization.
+```text
+SHA256SUMS.txt
+```
+
+Reviewers can use this file to verify that downloaded materials match the versions referenced in disclosure emails.
+
+## Disclosure Policy
+
+These materials are provided for coordinated vulnerability disclosure and defensive security review. They must not be used to test, access, or exploit systems without explicit authorization.
+
+Where exploitability has been validated only in a laboratory or emulated environment, the relevant report states that limitation explicitly. Additional physical-device or full-system emulation evidence can be provided during coordinated handling when required.
+
+## Contact
+
+Reporter: Chuanteng Su
+
