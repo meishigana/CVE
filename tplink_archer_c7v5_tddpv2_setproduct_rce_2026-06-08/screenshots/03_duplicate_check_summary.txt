@@ -1,0 +1,35 @@
+Public duplicate check summary - TP-Link Archer C7(US) V5 TDDPv2 setProductName RCE
+Generated from local NVD/API checks and duplicate_check.md on 2026-06-08.
+
+Finding: no exact public duplicate was found for:
+  TP-Link Archer C7(US) V5 firmware 220715
+  /usr/bin/tddp
+  TDDPv2 spCmd command byte 0x52
+  setProductName / product_name
+  shell command substitution command injection
+
+Related but not duplicate:
+
+1. CVE-2021-42232
+   Product: TP-Link Archer A7(US) V5 firmware 210519
+   Component: /usr/bin/tddp
+   Public chain: tftp parameter command injection near function address 401EA0
+   Bypass described publicly: insufficient semicolon filtering; || injection
+   Difference: this report targets Archer C7(US) V5 firmware 220715,
+   TDDPv2 command byte 0x52, setProductName/product_name, and $() substitution.
+
+2. CVE-2025-9377
+   Product: TP-Link Archer C7(EU) V2 and TL-WR841N/ND(MS) V9
+   Public chain: authenticated RCE through Parental Control page
+   Difference: web management interface issue, not TDDPv2 setProductName.
+
+NVD API local checks:
+   CVE-2021-42232: present; related tddp issue, not exact duplicate.
+   CVE-2025-9377: present; Archer C7(EU) V2 web RCE, not exact duplicate.
+   keywordSearch=TP-Link Archer C7 TDDP: totalResults=0.
+   keywordSearch=TP-Link Archer C7 RCE: no result covering this chain.
+
+Recommendation:
+   Submit as a suspected new CVE or new variant with explicit duplicate-risk notes.
+   Use precise title: TP-Link Archer C7(US) V5 firmware 220715 TDDPv2
+   0x52 setProductName command injection.

