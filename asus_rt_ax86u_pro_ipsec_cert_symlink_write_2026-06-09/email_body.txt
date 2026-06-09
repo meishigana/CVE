@@ -1,85 +1,165 @@
-Subject: CVE Request: ASUS RT-AX86U Pro authenticated IPsec certificate archive symlink traversal arbitrary file write
+To: cve-assign@mitre.org
+Cc: cve@mitre.org
+Subject: [REQUEST] CVE for ASUS RT-AX86U Pro - authenticated IPsec certificate archive symlink traversal arbitrary file write
 
-Hello,
+Hello MITRE CNA-LR team,
 
-I would like to request a CVE ID for an authenticated arbitrary file write vulnerability in ASUS RT-AX86U Pro firmware 3.0.0.6.102_37436.
+I would like to request a CVE ID for a suspected new vulnerability in ASUS RT-AX86U Pro firmware.
 
-Summary:
-
-The web endpoint `upload_server_ipsec_cert.cgi` handles IPsec server certificate archive uploads. The endpoint reaches `libwebapi.so!upload_server_ipsec_cert_cgi`, which extracts `/tmp/server_ipsec_file/server_ipsec.tgz` into `/tmp/server_ipsec_file` with `system("tar -xzf %s -C %s")`.
-
-The extraction does not prevent archive-contained symbolic links. A crafted archive can create a symlink inside the extraction directory and then write a subsequent archive member through the symlink outside `/tmp/server_ipsec_file`. In the verified PoC, the archive contains `linkout -> /tmp` followed by `linkout/asus_http_upload_symlink_write`, resulting in attacker-controlled content being written to `/tmp/asus_http_upload_symlink_write`.
+Vendor:
+ASUS
 
 Affected product:
+ASUS RT-AX86U Pro
 
-```text
-Vendor: ASUS
-Product: RT-AX86U Pro
-Firmware: 3.0.0.6.102_37436
-Endpoint: upload_server_ipsec_cert.cgi
-Component: usr/lib/libwebapi.so
-Function: upload_server_ipsec_cert_cgi @ 0xc89c
-```
+Affected firmware:
+3.0.0.6.102_37436
+RT-AX86U_PRO_3.0.0.6_102_37436-g5a1fb9f_476-gaed2e_nand_squashfs.pkgtb
 
-Hashes:
+Affected component:
+Web management endpoint: upload_server_ipsec_cert.cgi
+Web daemon: /usr/sbin/httpd
+Library: /usr/lib/libwebapi.so
+Function: upload_server_ipsec_cert_cgi
 
-```text
+Target file SHA256:
 B25BA9C81B4D42EA6727E076CF1FE930C09618A2ED406A8894667716721F46A8  firmware image
-6FC4777807A68229712AEB3B128660EA03063DE8AB0E0A73F0835AA029AD0E0A  usr/sbin/httpd
-902FFA78239981CDF3319D3D81FDE881CD5668EF6713AF0232E93D9DE8D61B37  usr/lib/libwebapi.so
-```
+6FC4777807A68229712AEB3B128660EA03063DE8AB0E0A73F0835AA029AD0E0A  /usr/sbin/httpd
+902FFA78239981CDF3319D3D81FDE881CD5668EF6713AF0232E93D9DE8D61B37  /usr/lib/libwebapi.so
 
-Suggested classification:
+Vulnerability type:
+Authenticated arbitrary file write primitive through unsafe archive extraction
 
-```text
+CWE:
 CWE-59: Improper Link Resolution Before File Access
 CWE-22: Improper Limitation of a Pathname to a Restricted Directory
-Authenticated arbitrary file write primitive through unsafe archive extraction
-```
+
+Suggested title:
+ASUS RT-AX86U Pro firmware 3.0.0.6.102_37436 upload_server_ipsec_cert.cgi authenticated IPsec certificate archive symlink traversal arbitrary file write
+
+Summary:
+The ASUS RT-AX86U Pro firmware 3.0.0.6.102_37436 web management interface appears to contain an authenticated arbitrary file write primitive in the IPsec server certificate upload handler. The endpoint upload_server_ipsec_cert.cgi accepts a certificate archive and reaches libwebapi.so!upload_server_ipsec_cert_cgi. That function extracts /tmp/server_ipsec_file/server_ipsec.tgz into /tmp/server_ipsec_file with a tar command constructed as "tar -xzf %s -C %s".
+
+The command arguments are fixed paths, so this is not shell metacharacter command injection. The issue is unsafe archive extraction. The handler does not prevent archive-contained symbolic links. A crafted tar archive can first create a symlink inside the extraction directory and then write a following archive member through that symlink outside the intended directory.
+
+Verified code path:
+upload_server_ipsec_cert.cgi -> httpd upload handler/post handler -> libwebapi.so!upload_server_ipsec_cert_cgi -> snprintf("tar -xzf %s -C %s") -> system()
+
+Root cause:
+The IPsec certificate upload handler extracts attacker-supplied archive content with tar without rejecting symlinks or validating the resolved path of each archive entry. When tar processes an archive member such as "linkout -> /tmp" followed by "linkout/asus_http_upload_symlink_write", the second member is written through the symlink to /tmp/asus_http_upload_symlink_write, outside /tmp/server_ipsec_file.
+
+Example laboratory payload archive entries:
+linkout -> /tmp
+linkout/asus_http_upload_symlink_write
+
+Observed write target in the lab reproduction:
+/tmp/asus_http_upload_symlink_write
+
+Observed marker content:
+HTTP_SYMLINK_WRITE
+
+Impact:
+An authenticated administrator can upload a crafted IPsec certificate archive that writes attacker-controlled content outside the intended temporary extraction directory. This may allow tampering with runtime files, service disruption, or follow-on exploitation if sensitive writable targets are reachable on a physical device. The current evidence proves an authenticated arbitrary file write primitive. It does not yet prove stable remote code execution.
 
 Suggested CVSS v3.1:
-
-```text
 CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:L = 5.5 Medium
-```
 
-This is a conservative score. The current evidence proves arbitrary file write outside the intended extraction directory, but does not prove stable RCE.
+CVSS rationale:
+This score is intentionally conservative. The vulnerable endpoint is a network-reachable web management endpoint, but the current evidence treats administrative authentication as required. The primitive affects integrity because attacker-controlled content can be written outside the intended extraction directory in a privileged firmware runtime context. Confidentiality impact has not been demonstrated. Availability impact is rated Low because malicious overwrite targets may disrupt services. If ASUS confirms lower privilege requirements or a reliable persistent code execution path, the score should be adjusted.
 
-Duplicate check:
+Reproduction status:
+The issue has been reproduced in a local, authorized firmware-emulation laboratory environment using the original /usr/sbin/httpd and /usr/lib/libwebapi.so binaries extracted from the firmware image. The target binaries were not modified.
 
-NVD API checks on 2026-06-09 returned `totalResults=0` for:
+The reproduction creates an authenticated web session, uploads a crafted multipart archive to /upload_server_ipsec_cert.cgi, and verifies that attacker-controlled content is written outside /tmp/server_ipsec_file.
 
-```text
-upload_server_ipsec_cert.cgi
-server_ipsec_file
-upload_server_ipsec_cert_temp
-ASUS RT-AX86U Pro IPsec CVE
-ASUS tar symlink traversal ipsec certificate upload
-```
-
-The related `CVE-2022-40617` is a strongSwan revocation plugin denial of service and does not describe this ASUS web upload archive extraction issue.
-
-Key reproduction evidence:
-
-```text
+Key laboratory evidence:
 POST /login_v2.cgi 200
 COOKIE asus_token=...
 RAW_UPLOAD_RECV b'HTTP/1.0 200 OK...
 EXISTS /tmp/asus_http_upload_symlink_write
 CONTENT /tmp/asus_http_upload_symlink_write: HTTP_SYMLINK_WRITE
-```
 
-The full evidence package includes:
+Additional direct tar evidence:
+The firmware-provided tar normalizes direct parent-directory or absolute-path traversal attempts, but still follows archive-contained symbolic links.
 
-```text
-technical_report.md
-poc_reproduction.md
-duplicate_check.md
-evidence_index.md
-evidence_http_upload_symlink_write.txt
-evidence_direct_tar_symlink_write.txt
-static_archive_handler_string_scan.txt
-static_libwebapi_ipsec_disasm.txt
-```
+Direct tar evidence excerpt:
+tar: removing leading '../../' from member names
+MISSING /tmp/asus_tar_traversal_parent
+MISSING /tmp/asus_tar_traversal_deep
+MISSING /tmp/asus_tar_traversal_abs
+EXISTS /tmp/asus_tar_symlink_write: symlink traversal
 
-Thank you.
+Static evidence:
+The relevant exported function and strings are present in /usr/lib/libwebapi.so:
+upload_server_ipsec_cert_cgi @ 0xc89c
+upload_server_ipsec_cert_temp
+/tmp/server_ipsec_file/server_ipsec.tgz
+/tmp/server_ipsec_file
+tar -xzf %s -C %s
+
+The focused disassembly shows command construction and execution:
+0x0000c97c: bl       #0xbc44 ; snprintf
+0x0000c980: mov      r0, r6
+0x0000c984: bl       #0xbb30 ; system
+0x0000ca0c: bl       #0xbd04 ; _eval
+0x0000ca50: bl       #0xbcc8 ; doSystem
+
+Evidence repository:
+https://github.com/meishigana/CVE/tree/main/asus_rt_ax86u_pro_ipsec_cert_symlink_write_2026-06-09
+
+Repository integrity file:
+https://github.com/meishigana/CVE/blob/main/SHA256SUMS.txt
+
+Key evidence file SHA256 values:
+248a8475c12557aea44be442ceb029ee8ac8ef19dd9cbd8d135df5c9df4dee92  technical_report.md
+aa9ac572f5d85a930552d2bf11a2d868b6150702986cb9cc2d8c2946c85f7f9c  poc_reproduction.md
+b33abf0a512ee57d286dab954c10a398f40951233ac086cc8d1efb7d2384215b  duplicate_check.md
+3ee4be916ed1d372374764bfc760d73aaf34f0454ef35e01dedb51312eaa7de1  evidence_http_upload_symlink_write.txt
+77f9dd689221a001be40c2d0292419bbfe34192f99597fe0bb9bdc40abe6cd4b  evidence_direct_tar_symlink_write.txt
+acc2c4a0f27646b0202dc618044ea0c5097067bb2c94dc3580840f9e06c6c9e6  static_archive_handler_string_scan.txt
+bc7ada415bdc795c3626a71c49f536bcd1b760fbea0421c358118e8e11749522  static_libwebapi_ipsec_disasm.txt
+
+Important validation note:
+The dynamic reproduction was performed in a Docker/WSL-based local firmware-emulation environment using qemu-arm-static and an extracted firmware rootfs. The target /usr/sbin/httpd and /usr/lib/libwebapi.so binaries were not modified. The environment is sufficient to demonstrate the upload handler, archive extraction behavior, and out-of-directory file write, but physical-device behavior and persistent overwrite impact should be confirmed during coordinated handling.
+
+I can provide additional physical-device or full-system emulation evidence if required.
+
+Duplicate check:
+I checked public CVE and PoC records and did not find an exact duplicate for the following combination:
+ASUS RT-AX86U Pro firmware 3.0.0.6.102_37436 + upload_server_ipsec_cert.cgi + upload_server_ipsec_cert_cgi + /tmp/server_ipsec_file/server_ipsec.tgz + tar archive-contained symlink traversal + authenticated arbitrary file write primitive.
+
+NVD API checks on 2026-06-09 returned totalResults=0 for:
+upload_server_ipsec_cert.cgi
+server_ipsec_file
+upload_server_ipsec_cert_temp
+ASUS RT-AX86U Pro IPsec CVE
+ASUS tar symlink traversal ipsec certificate upload
+
+Related but not exact duplicate:
+
+1. CVE-2022-40617
+This is a strongSwan revocation plugin denial-of-service issue involving crafted certificate CRL/OCSP URLs. It is IPsec/certificate related, but it is a third-party component denial-of-service issue and does not cover ASUS upload_server_ipsec_cert.cgi, libwebapi.so!upload_server_ipsec_cert_cgi, /tmp/server_ipsec_file, or unsafe tar extraction.
+
+References:
+NVD CVE-2022-40617:
+https://nvd.nist.gov/vuln/detail/CVE-2022-40617
+
+ASUS Product Security Advisory page:
+https://www.asus.com/content/asus-product-security-advisory/
+
+Suggested remediation:
+- Do not extract untrusted certificate archives with raw tar -xzf.
+- Reject archive entries that are symbolic links or hard links.
+- Reject absolute paths, parent-directory path components, and entries whose resolved path escapes the intended extraction directory.
+- Use a private temporary extraction directory and validate every archive entry before writing it.
+- Prefer structured archive extraction APIs with explicit link/path controls.
+- Run upload handling code with least privilege where possible.
+- Add regression tests for archive-contained symlinks, hard links, absolute paths, and parent-directory paths.
+
+Disclosure plan:
+I am requesting coordinated handling and a CVE assignment. I do not plan to publish additional exploit details before vendor coordination. A reasonable coordinated disclosure timeline would be 90 days from vendor acknowledgement, unless the vendor requests a different schedule or confirms that a fix is available earlier.
+
+Please let me know if additional information, a minimized PoC archive, packet capture, physical-device reproduction, or full-system QEMU reproduction is required.
+
+Best regards,
+Chuanteng Su
