@@ -9,6 +9,7 @@ The materials are intended to help vendors, CNAs, and security coordinators revi
 | Product | Vulnerability | Status | Directory |
 | --- | --- | --- | --- |
 | TP-Link Archer C7(US) V5 firmware 220715 | TDDPv2 `setProductName` OS command injection | Prepared for CVE request | `tplink_archer_c7v5_tddpv2_setproduct_rce_2026-06-08/` |
+| NETGEAR R7000 firmware V1.0.9.18_1.2.27 | ReadyCLOUD `leafp2p_username` to `comm.sh` OS command injection | Prepared for CVE request | `netgear_r7000_readycloud_leafp2p_comm_rce_2026-06-08/` |
 
 ## Repository Integrity
 

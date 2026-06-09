@@ -1,0 +1,98 @@
+Subject: CVE Request - NETGEAR R7000 ReadyCLOUD command injection via leafp2p_username state
+
+Hello,
+
+I would like to request CVE assignment for an OS command injection vulnerability affecting NETGEAR R7000 firmware V1.0.9.18_1.2.27.
+
+Summary:
+
+NETGEAR R7000 firmware V1.0.9.18_1.2.27 contains a command injection vulnerability in the ReadyCLOUD registration flow. During registration, /opt/broken/readycloud_control.cgi reads leafp2p_username from NVRAM and writes it into readycloud_hostname. /opt/broken/register.sh then sources /opt/broken/comm.sh. comm.sh embeds readycloud_hostname into a curl --user shell command without quoting and executes it through eval. If leafp2p_username contains shell metacharacters, arbitrary OS commands execute.
+
+Affected product:
+
+Vendor: NETGEAR
+Product: R7000
+Firmware: V1.0.9.18_1.2.27
+Firmware image: R7000-V1.0.9.18_1.2.27.chk
+
+Affected components:
+
+/opt/broken/readycloud_control.cgi
+/opt/broken/register.sh
+/opt/broken/comm.sh
+/usr/lib/libreadycloud.so
+
+Vulnerability type:
+
+CWE-78, OS Command Injection
+
+Verified chain:
+
+leafp2p_username NVRAM value
+-> readycloud_control.cgi
+-> readycloud_hostname
+-> register.sh
+-> comm.sh
+-> unquoted curl --user command
+-> eval
+-> OS command execution
+
+Vulnerable code:
+
+NAS_NAME=`readycloud_nvram get readycloud_hostname`
+NAS_PASS=`readycloud_nvram get readycloud_password`
+COMM_EXEC="curl --basic -k --user ${NAS_NAME}:${NAS_PASS} --url ${URL}"
+FULL_EXEC="`cat "${1}" | ${COMM_EXEC} -X POST --data-binary @- 2>/dev/null`"
+eval COMM_RESULT="${FULL_EXEC}" || return $ERROR
+
+Proof payload:
+
+leafp2p_username = routeruser; /bin/touch /tmp/pwned; #
+
+Dynamic evidence:
+
+The issue was reproduced in an authorized firmware-emulation lab using the original firmware rootfs. The PoC models attacker-polluted persistent state for leafp2p_username through a minimal ARM libnvram.so shim and invokes the original readycloud_control.cgi/register.sh/comm.sh chain.
+
+The runtime evidence shows:
+
+Using routeruser; /bin/touch /tmp/pwned; # as device username
+readycloud_hostname=routeruser; /bin/touch /tmp/pwned; #
+curl --basic -k --user routeruser
+[pwned]
+-rw-r--r-- ... /tmp/pwned
+
+The PoC was re-run twice from a freshly extracted firmware rootfs, and both runs created /tmp/pwned.
+
+Important precondition:
+
+The current evidence proves a stable RCE sink and ReadyCLOUD trigger when leafp2p_username is attacker-polluted before registration. I have not yet proven the upstream external web/API primitive that writes arbitrary metacharacters into leafp2p_username. I am submitting this as a ReadyCLOUD command injection reachable from polluted persistent configuration state, not as an unqualified unauthenticated remote RCE.
+
+Suggested CVSS v3.1:
+
+CVSS:3.1/AV:A/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H = 6.8 Medium
+
+This is conservative. If an independent remote write primitive for leafp2p_username is confirmed, AV/PR should be revised.
+
+Duplicate check:
+
+I did not find an exact public duplicate for this chain. The closest public issue is CVE-2024-35520, but it affects NETGEAR R7000 firmware 1.0.11.136 in RMT_invite.cgi via device_name2. This finding affects V1.0.9.18_1.2.27 and uses ReadyCLOUD readycloud_control.cgi -> register.sh -> comm.sh with leafp2p_username propagation. CVE-2022-30078 is also different; it affects NETGEAR R6200v2/R6300v2 IPv6 CGI parameters.
+
+Attached/provided files:
+
+README.md
+cve_submission_draft.md
+technical_report.md
+poc_reproduction.md
+duplicate_check.md
+evidence_index.md
+target_hashes.txt
+verify_netgear_readycloud_leafp2p_to_comm_rce.sh
+evidence_leafp2p_to_comm_rce.txt
+evidence_leafp2p_to_comm_rce_rerun_1.txt
+evidence_leafp2p_to_comm_rce_rerun_2.txt
+static_comm_sh_numbered.txt
+static_readycloud_control_strings.txt
+source_verification_report.md
+
+Regards,
+

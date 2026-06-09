@@ -1,0 +1,12 @@
+readycloud_control_path
+Cannot find "readycloud_control_path" in nvram.
+/unregister.sh 
+Cannot get value from nvram (leafp2p_username)
+leafp2p_username
+readycloud_hostname
+Cannot get value from nvram (leafp2p_password)
+leafp2p_password
+readycloud_password
+Cannot find "readycloud_control_path" in nvram(needed to find register.sh).
+/register.sh 
+Calling register.sh with line 
