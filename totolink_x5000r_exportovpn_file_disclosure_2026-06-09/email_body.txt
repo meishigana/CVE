@@ -1,0 +1,156 @@
+To: cve-assign@mitre.org
+Cc: cve@mitre.org
+Subject: [REQUEST] CVE for TOTOLINK X5000R - exportOvpn pre-authenticated OpenVPN file disclosure
+
+Hello MITRE CNA-LR team,
+
+I would like to request a CVE ID for a suspected new vulnerability in TOTOLINK X5000R firmware.
+
+Reporter:
+Name: Chuanteng Su
+Contact: fuhanhan2014@163.com
+Discovery date: 2026-06-08
+
+Vendor:
+TOTOLINK
+
+Affected product:
+TOTOLINK X5000R
+
+Affected firmware:
+V9.1.0cu.2415_B20250515
+V9.1.0cu.2350_B20230313
+
+Affected component:
+/web/cgi-bin/cstecgi.cgi
+
+Vulnerability type:
+Pre-authenticated OpenVPN profile/archive disclosure and suffix-constrained path traversal
+
+CWE:
+CWE-862: Missing Authorization
+CWE-22: Improper Limitation of a Pathname to a Restricted Directory
+CWE-200: Exposure of Sensitive Information to an Unauthorized Actor
+
+Suggested title:
+TOTOLINK X5000R cstecgi.cgi exportOvpn pre-authenticated OpenVPN profile disclosure and suffix-constrained path traversal
+
+Summary:
+TOTOLINK X5000R cstecgi.cgi contains an exportOvpn handler that processes OpenVPN export requests before the normal web token/session authentication path. A remote unauthenticated attacker can request existing OpenVPN user profile files or archives. The handler also concatenates the user-controlled username value into /etc/openvpn/server/user/%s.ovpn or /etc/openvpn/server/user/%s.tar.gz without path normalization or directory boundary checks, allowing ../ traversal to read suffix-matching files outside the OpenVPN user directory.
+
+This issue is not submitted as RCE. Current evidence supports pre-authenticated OpenVPN profile/archive disclosure and suffix-constrained path traversal.
+
+Vulnerable request forms:
+/cgi-bin/cstecgi.cgi?exportOvpn&type=user&name=<username>&mode=config
+/cgi-bin/cstecgi.cgi?exportOvpn&type=user&name=<username>&filetype=gz
+
+The firmware parser is position-sensitive:
+arg0: contains exportOvpn
+arg1: type=user
+arg2: username field, for example name=<username> or username=<username>
+arg3: mode=config or filetype=gz
+
+Impact:
+An unauthenticated attacker can download existing OpenVPN profile files or OpenVPN export archives. If those files contain client certificates, private keys, static keys, server addresses, or reusable VPN credentials, the attacker may obtain VPN access material without logging in to the web interface.
+
+The traversal behavior is not a fully arbitrary file read. The file path is constrained by the forced suffix:
+mode=config appends .ovpn
+filetype=gz appends .tar.gz
+
+Suggested CVSS v3.1:
+CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N = 7.5 High
+
+CVSS rationale:
+The vulnerability is remotely reachable over HTTP, requires low attack complexity, requires no privileges or user interaction, and primarily impacts confidentiality. The score assumes that OpenVPN profile or archive files contain sensitive VPN access material. If the dependency on generated OpenVPN files is considered a stronger environmental limitation, confidentiality impact may be adjusted downward.
+
+Reproduction status:
+The issue has been reproduced in a local QEMU/chroot CGI harness using the original firmware CGI and libraries. The original firmware samples were not modified. The harness pre-created representative OpenVPN output files in a temporary rootfs to model a configured device runtime state, because firmware images do not include user-generated OpenVPN exports by default.
+
+Representative laboratory evidence:
+exportOvpn&type=user&name=alice&mode=config
+HTTP/1.1 200 OK
+OVPN_SECRET_FOR_ALICE
+
+exportOvpn&type=user&name=alice&filetype=gz
+HTTP/1.1 200 OK
+TARGZ_SECRET_FOR_ALICE
+
+exportOvpn&type=user&name=../passwd&mode=config
+HTTP/1.1 200 OK
+TRAVERSAL_SECRET
+
+exportOvpn&type=user&name=../passwd&filetype=gz
+HTTP/1.1 200 OK
+TRAVERSAL_GZ_SECRET
+
+Command log from the harness:
+openvpn-cert build_user alice config
+openvpn-cert build_user alice gz
+openvpn-cert build_user ../passwd config
+openvpn-cert build_user ../passwd gz
+
+RCE boundary:
+Current evidence does not support a command execution claim. Shell metacharacter and URL-encoded metacharacter tests did not produce command execution in the available evidence. Tested categories included semicolon, pipe, backtick, $(), raw LF/CR/tab, URL-encoded metacharacters, and filetype/type parameter injection.
+
+Evidence repository:
+https://github.com/meishigana/CVE/tree/main/totolink_x5000r_exportovpn_file_disclosure_2026-06-09
+
+Repository integrity file:
+https://github.com/meishigana/CVE/blob/main/SHA256SUMS.txt
+
+Key evidence file SHA256 values:
+354d1204a9ee43d30a6516ac69ee34d425bde79e37d4ed583b0d46c69709056d  technical_report.md
+e72d2e936a14d519e1b682685c3a49bdf817c9ec7b3524ac040791d645fdefbb  poc_reproduction.md
+88cfa167600855b8a234872901b4a9358085c77c61f783f8e95d4aa22d63c1e6  duplicate_check.md
+1b74484bcb6143473e0538edcd9c7e3fea1df45223ed7ca948610ec21704afce  evidence_index.md
+d4e10dd46a9cac13b4b922a4e352111055db6d82e04cc32cbb5642562ba74f62  cve_submission_draft.md
+17d7125b5266846e03d5dc5e625716d55b35770cd313145f63815de2f286fc21  poc_pre_auth_file_disclosure.py
+0dcff44c6b61333be13db61133e7222a2c4301e5095d1deb05d2eae055cde87c  verified_report_zh.md
+df8264824d809e6c9f086dc6a0172dce0a8e2ad396679577ace7478843236727  vulndb_verified_report_zh.md
+bbd1d0a15bc7fbe4499047585560650ca662dbc67e61c691992d303a5632adb4  scripts\probe_totolink_exportovpn_versions.sh
+0eeed305d3e8a282933c6cfc19ecdcaf849acfeb8bc7719d870ba9e535eb2cdb  scripts\probe_totolink_exportovpn_rce_attempts.sh
+58748def84f0189b3ec29ac43a7778652224461a41e944e67d9d9419f713ee88  scripts\analyze_totolink_exportovpn_static.sh
+
+Duplicate check:
+I checked public CVE records and did not find an exact duplicate for the following combination:
+TOTOLINK X5000R V9.1.0cu.2415_B20250515 / V9.1.0cu.2350_B20230313 + cstecgi.cgi exportOvpn + pre-authenticated OpenVPN profile/archive disclosure + suffix-constrained path traversal.
+
+No existing CVE was found that covers this exact combination.
+
+Related but not exact duplicate:
+
+1. CVE-2025-14586
+This is an exportOvpn command injection affecting TOTOLINK X5000R 9.1.0cu.2089_B20211224. It is related to the same general exportOvpn area, but the public issue is command injection on a different firmware version. The issue reported here is file disclosure and suffix-constrained path traversal verified on V9.1.0cu.2415_B20250515 and V9.1.0cu.2350_B20230313.
+
+2. CVE-2025-13184
+This is unauthenticated Telnet enablement via cstecgi.cgi on X5000R V9.1.0u.6369_B20230113. It is a different handler and impact.
+
+3. CVE-2025-9934
+This is a cstecgi.cgi command injection in function sub_410C34 via the pid argument affecting V9.1.0cu.2415_B20250515. It is a different function, argument, and impact.
+
+References:
+NVD CVE-2025-14586:
+https://nvd.nist.gov/vuln/detail/CVE-2025-14586
+
+NVD CVE-2025-13184:
+https://nvd.nist.gov/vuln/detail/CVE-2025-13184
+
+NVD CVE-2025-9934:
+https://nvd.nist.gov/vuln/detail/CVE-2025-9934
+
+Suggested remediation:
+- Move exportOvpn behind the same token/session authentication used by privileged web actions.
+- Validate usernames with a strict allowlist such as ^[A-Za-z0-9_-]{1,64}$.
+- Normalize the final path and verify that it remains under /etc/openvpn/server/user/.
+- Do not allow unauthenticated requests to invoke openvpn-cert build_user.
+- Avoid system() string concatenation for external commands; use an argument-vector execution API where possible.
+
+Disclosure plan:
+I am requesting coordinated handling and a CVE assignment. I do not plan to publish full exploit details before vendor coordination. A reasonable coordinated disclosure timeline would be 90 days from vendor acknowledgement, unless the vendor requests a different schedule or confirms that a fix is available earlier.
+
+Please let me know if additional information, a minimized PoC, packet capture, real-device reproduction, or full-system QEMU reproduction is required.
+
+Best regards,
+Chuanteng Su
+
+
