@@ -1,0 +1,23 @@
+### direct tar rc
+0
+
+### stdout
+
+### stderr
+tar: removing leading '../../' from member names
+
+### marker files
+MISSING /tmp/server_ipsec_file/asusCert.der
+MISSING /tmp/asus_tar_traversal_parent
+MISSING /tmp/asus_tar_traversal_deep
+MISSING /tmp/asus_tar_traversal_abs
+
+### symlink tar rc
+0
+
+### symlink stdout
+
+### symlink stderr
+
+### symlink marker
+EXISTS /tmp/asus_tar_symlink_write: symlink traversal

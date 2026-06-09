@@ -1,0 +1,151 @@
+### login rc
+0
+
+### probe rc
+0
+
+### httpd status
+alive
+
+### probe log
+POST /get_Nonce.cgi 200 {'server': 'httpd/3.0', 'x-frame-options': 'SAMEORIGIN', 'x-xss-protection': '1; mode=block', 'date': 'Tue, 09 Jun 2026 02:04:43 GMT', 'cache-control': 'no-cache, no-store, must-revalidate', 'pragma': 'no-cache', 'expires': '0', 'content-type': 'text/html', 'connection': 'close'} b'{"nonce":"Rf1UBLc9tXsno5sZZGPMar132tk3dEaV", "sresp":""}'
+POST /login_v2.cgi 200 {'server': 'httpd/3.0', 'date': 'Tue, 09 Jun 2026 02:04:43 GMT', 'content-type': 'text/html', 'set-cookie': 'asus_token=Rf1UBLc9tXsno5sZZGPMar132tk3dEa; HttpOnly;', 'connection': 'close'} b'<HTML><HEAD>\n<meta http-equiv="refresh" content="0; url=index.asp">\r\n</HEAD></HTML>\n'
+COOKIE asus_token=Rf1UBLc9tXsno5sZZGPMar132tk3dEa
+UPLOAD_BODY_READY 390
+RAW_UPLOAD_BEGIN 612
+RAW_UPLOAD_SENT
+RAW_UPLOAD_RECV b'HTTP/1.0 200 OK\r\nServer: httpd/3.0\r\nx-frame-options: SAMEORIGIN\r\nx-xss-protection: 1; mode=block\r\nDate: Tue, 09 Jun 2026 02:04:43 GMT\r\nCache-Control: no-cache, no-store, must-revalidate\r\nPragma: no-ca'
+RAW_UPLOAD_RC 0
+
+### files
+MISSING /tmp/server_ipsec_file/server_ipsec.tgz
+MISSING /tmp/server_ipsec_file/linkout
+EXISTS /tmp/asus_http_upload_symlink_write: -rw-r--r-- 1 root root 19 Jun  9 02:04 /root/inout/work/deepdive/asus_rt_ax86u_pro_300610237436_initial_2026_06_09/ipsec_upload_symlink_write/rootfs/tmp/asus_http_upload_symlink_write
+CONTENT /tmp/asus_http_upload_symlink_write: HTTP_SYMLINK_WRITE
+
+MISSING /tmp/asus_tar_symlink_write
+MISSING /jffs/ca_files/asusCert.der
+
+### command hits
+
+### stderr tail
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+cnonce = ZEppfglkDAndXVtVoW2eeU4javmdvDE5
+id = TruN4illxj
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 
+_netlink_recv_mesg:197  return NULL from rec, why socke is not initialized? 

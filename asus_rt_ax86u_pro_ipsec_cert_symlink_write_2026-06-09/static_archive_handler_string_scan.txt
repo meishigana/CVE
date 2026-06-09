@@ -1,0 +1,135 @@
+# Archive/upload handler string scan
+ROOT=/root/inout/firmware/unpacked/asus/RT-AX86U_PRO_300610237436/_RT-AX86U_PRO_3.0.0.6_102_37436-g5a1fb9f_476-gaed2e_nand_squashfs.pkgtb.extracted/squashfs-root
+
+### usr/lib/libwebapi.so
+gen_server_ipsec_file
+upload_server_ipsec_cert_cgi
+/tmp/server_ovpn_file/server_ovpn.tgz
+tar -xzf %s -C %s
+tar czf %s -C %s
+/tmp/server_ipsec.cert
+upload_server_ipsec_cert_temp
+/tmp/server_ipsec_file/server_ipsec.tgz
+/tmp/server_ipsec_file
+
+### usr/sbin/httpd
+gen_server_ipsec_file
+upload_server_ipsec_cert_cgi
+uploadIconFile.tar
+ipsec_s2s.conf
+/jffs/cert.tgz
+/tmp/cert.tar
+/tmp/networkmap.tar
+ipsec_s2s_unit
+/tmp/ipsec_s2sc%d
+tar cvf /tmp/IconFile.tar /jffs/usericon /tmp/upnpicon
+/tmp/IconFile.tar
+/tmp/server_ipsec_file
+upload_server_ipsec_cert_temp
+/tmp/server_ipsec_file/server_ipsec.tgz
+/tmp/server_ovpn_file/server_ovpn.tgz
+ipsec_s2s_upload_unit
+/tmp/ipsec_s2s_upload
+<script>parent.callback_upload_cert(%d);</script>
+/tmp/cert_key.tar
+/tmp/cacert_key.tar
+/tmp/server_ipsec.cert
+**.tgz
+upload_cert_key.cgi*
+caupload.cgi*
+upload_server_ipsec_cert.cgi*
+ipsec_s2s_upload.cgi*
+/tmp/fb_data_tmp.tgz
+
+### firmware-wide likely archive extraction strings
+#### usr/lib/libshared.so
+/jffs/cert.tgz
+tar cf - confmtd -C /tmp | gzip -c > /tmp/config.tgz
+cp /tmp/config.tgz /data
+/data/config.tgz
+cp /data/config.tgz /tmp/config.tgz
+gunzip -c /tmp/config.tgz | tar xf - -C /tmp
+
+#### usr/lib/libwebapi.so
+gen_server_ipsec_file
+upload_server_ipsec_cert_cgi
+/tmp/server_ovpn_file/server_ovpn.tgz
+tar -xzf %s -C %s
+/tmp/server_ipsec.cert
+upload_server_ipsec_cert_temp
+/tmp/server_ipsec_file/server_ipsec.tgz
+/tmp/server_ipsec_file
+
+#### usr/sbin/acme.sh
+    if ! (tar xzf $localname || gtar xzf $localname); then
+
+#### usr/sbin/app_base_packages.sh
+TEMP_BASELEN_FILE=$APPS_INSTALL_PATH/BasePackages.tgz
+BASELEN_TGZ=BasePackages.tgz
+	#base_file=asus_base_apps_$pkg_type.tgz
+		base_file=asus_base_apps_new_$pkg_type.tgz
+		base_file=asus_base_apps_$pkg_type.tgz
+		tar xzf $base_file # uclibc-opt & ipkg-opt.
+				tar xzf $TEMP_BASELEN_FILE -C $APPS_INSTALL_PATH
+					tar xzf $TEMP_BASELEN_FILE -C $APPS_INSTALL_PATH
+		tar xzf $base_file # uclibc-opt & ipkg-opt.
+
+#### usr/sbin/app_install.sh
+		echo "$pkg_file.tgz"
+
+#### usr/sbin/app_upgrade.sh
+		echo "$pkg_file.tgz"
+
+#### usr/sbin/brcmsysinfo.sh
+cd /tmp && tar zcf nf_conntrack.tgz nf_conntrack
+mv /tmp/nf_conntrack.tgz /tmp/asusfbsvcs/duplicate_log
+
+#### usr/sbin/dblog
+sysdblog%05d.tgz
+rm -f %s/dblog_dm.tgz
+tar -zch -f %s/dblog_dm.tgz %s %s %s %s %s 2>/dev/null
+
+#### usr/sbin/debug_monitor
+.tgz
+gzip -c %s.tar > %s.tgz
+%s.tgz
+%s/%s%s.tgz
+
+#### usr/sbin/gencert.sh
+	tar czvf /jffs/cert.tgz -C / etc/cert.crt etc/${HTTPD_ROOTCA_CERT} etc/${HTTPD_ROOTCA_KEY} \
+
+#### usr/sbin/httpd
+gen_server_ipsec_file
+upload_server_ipsec_cert_cgi
+/jffs/cert.tgz
+/tmp/server_ipsec_file
+upload_server_ipsec_cert_temp
+/tmp/server_ipsec_file/server_ipsec.tgz
+/tmp/server_ovpn_file/server_ovpn.tgz
+/tmp/server_ipsec.cert
+**.tgz
+upload_server_ipsec_cert.cgi*
+/tmp/fb_data_tmp.tgz
+
+#### usr/sbin/wget
+.tgz
+
+#### sbin/rc
+/data/config.tgz
+/jffs/cert.tgz
+/jffs/debuglog_klog.tgz
+/jffs/debuglog_core.tgz
+/jffs/debuglog_slog.tgz
+nf_conntrack.tgz
+wpasupp_logs.tgz
+/tmp/wan.env.tgz
+/tmp/dnsconf.tgz
+tar -zcf %s/%s.tgz %s
+%s/%s.tgz
+cd /tmp; rm -f log_wlstat.tgz; tar zcf log_wlstat.tgz %s
+/tmp/log_wlstat.tgz
+cp /data/*.tgz %s
+/tmp/fb_data_tmp.tgz
+/tmp/fb_data.tgz
+rm -f /data/*.tgz
+
