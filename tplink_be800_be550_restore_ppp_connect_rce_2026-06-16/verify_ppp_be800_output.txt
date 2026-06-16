@@ -1,0 +1,5 @@
+archive=/tmp/tplink_be_restore_ppp_connect_chain_3670/restore_ppp_connect_poc.tgz
+root=/tmp/tplink_be_restore_ppp_connect_chain_3670/root
+wrote=/tmp/tplink_be_restore_ppp_connect_chain_3670/root/etc/config/network
+captured_pppd_argv=/tmp/tplink_be_restore_ppp_connect_chain_3670/pppd.argv
+306aa90483213533566605cccce006f15bbb65bc016ae2b26763e68a8afcbad0  /tmp/tplink_be_restore_ppp_connect_chain_3670/restore_ppp_connect_poc.tgz

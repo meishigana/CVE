@@ -1,0 +1,166 @@
+To: cve-assign@mitre.org
+Cc: cve@mitre.org
+Subject: [REQUEST] CVE for TP-Link Archer BE800/BE550 - authenticated configuration restore to root PPP command execution
+
+Hello MITRE CNA-LR team,
+
+I would like to request a CVE ID for a suspected new vulnerability in TP-Link Archer BE800 v1 and TP-Link Archer BE550 v2 / BE9300 v2 firmware.
+
+Reporter:
+Name: Chuanteng Su
+Contact: fuhanhan2014@163.com
+Discovery date: 2026-06-16
+
+Vendor:
+TP-Link
+
+Affected products and firmware:
+1. TP-Link Archer BE800 v1
+   Firmware: 1.4.1 Build 20260401
+   Firmware archive: Archer BE800v1_260401.zip
+   Firmware image: be800v1-up-all-ver1-4-1-P1[20260401-rel14784]_sign_2026-04-01_05.21.50.bin
+   Firmware image SHA256: 8cc0888a92b0a36ed97f04e175489affd1d3573c953f2c1c0ebd9c3996fe9c01
+
+2. TP-Link Archer BE550 v2 / BE9300 v2
+   Firmware: 1.3.1 Build 20260403
+   Firmware archive: Archer BE550v2_260403.zip
+   Firmware image: be550v2-be9300v2-up-all-ver1-3-1-P1[20260403-rel18661]_sign_2026-04-03_05.34.46.bin
+   Firmware image SHA256: 14459cc129b1e186c195c9d6ebb5a76cc27e3196bcba6d14d5225cadb89f8a17
+
+Affected component:
+LuCI configuration restore handler and PPP network service configuration handling
+
+Vulnerability type:
+Authenticated unsafe configuration restore leading to rootfs-relative file write and root command execution through restored PPP configuration
+
+CWE:
+CWE-22: Improper Limitation of a Pathname to a Restricted Directory
+CWE-73: External Control of File Name or Path
+CWE-78: Improper Neutralization of Special Elements used in an OS Command
+
+Suggested title:
+TP-Link Archer BE800 and BE550 unsafe authenticated configuration restore to PPP connect root command execution
+
+Summary:
+The affected firmware GPL source contains LuCI configuration restore handlers that stream an authenticated administrator-uploaded backup archive directly into:
+
+tar -xzC/ >/dev/null 2>&1
+
+Because extraction is rooted at "/" and no archive member whitelist is applied, a crafted backup archive can contain a normal relative member such as "etc/config/network". This writes "/etc/config/network" on the device.
+
+The strongest current command execution chain is through PPP configuration. A restored network config can define a proto "ppp" interface with attacker-controlled option "connect". TP-Link's PPP netifd helper passes that value to root "/usr/sbin/pppd" as:
+
+connect
+<attacker command>
+
+The TP-Link local pppd source treats "connect" as a shell command string and executes it through "/bin/sh -c" on the tty-channel PPP path. The command can be triggered when the restored interface is brought up through LuCI apply, network restart, /sbin/ifup, or reboot.
+
+This issue requires authenticated administrator access to the router management interface. It is not currently claimed as unauthenticated RCE.
+
+Verified code path:
+Authenticated LuCI restore upload
+-> tar -xzC/ with extraction root "/"
+-> restored /etc/config/network
+-> netifd PPP helper reads option connect
+-> /usr/sbin/pppd receives connect "<attacker command>"
+-> pppd tty-channel path executes the connect command through /bin/sh -c
+
+Key source evidence:
+1. Restore command:
+   BE800:
+   gpl_focus/GPL_Archer_BE800v1/Iplatform/openwrt/ibase/luci/src/modules/admin-full/luasrc/controller/admin/system.lua:185
+
+   BE550 / BE9300:
+   gpl_focus/GPL_Archer_BE550v2.6_BE9300v2.6/Iplatform/openwrt/ibase/luci/src/modules/admin-full/luasrc/controller/admin/system.lua:185
+
+2. Upload handler:
+   The non-image upload path pipes uploaded archive chunks into the restore command around system.lua lines 227-240.
+
+3. PPP execution sink:
+   BE800:
+   gpl_focus/GPL_Archer_BE800v1/qca_95xx_12_1/package/network/services/ppp/files/ppp.sh:68-76
+   gpl_focus/GPL_Archer_BE800v1/qca_95xx_12_1/package/network/services/ppp/files/ppp.sh:136-160
+
+   BE550 / BE9300:
+   gpl_focus/GPL_Archer_BE550v2.6_BE9300v2.6/qca_95xx_12_2/package/network/services/ppp/files/ppp.sh:68-76
+   gpl_focus/GPL_Archer_BE550v2.6_BE9300v2.6/qca_95xx_12_2/package/network/services/ppp/files/ppp.sh:136-160
+
+4. pppd shell execution semantics:
+   inout/firmware/gpl/tp-link/extracted/GPL_Archer_BE800v1/Iplatform/packages/opensource/pppd/src/pppd/tty.c:183-187
+   inout/firmware/gpl/tp-link/extracted/GPL_Archer_BE800v1/Iplatform/packages/opensource/pppd/src/pppd/main.c:1862-1868
+
+Proof of concept:
+A benign local verifier for the primary PPP chain is included in the evidence repository:
+
+verify_tplink_be_restore_ppp_connect_rce_chain_2026_06_16.sh
+
+The verifier creates a backup archive containing:
+
+etc/config/network
+
+with this benign PPP marker configuration:
+
+config interface 'pocppp'
+        option proto 'ppp'
+        option device '/dev/null'
+        option username 'poc'
+        option password 'poc'
+        option connect 'id > /tmp/tplink_be_ppp_connect_poc'
+
+The verifier confirms that the crafted archive layout matches the vulnerable restore semantics and that the "connect" value reaches the root pppd argv stream on both BE800 and BE550 GPL PPP scripts.
+
+Supporting impact:
+The same unsafe restore primitive can also write "/etc/rc.local". OpenWrt executes "/etc/rc.local" through "/etc/init.d/done" after reboot. This is supporting impact only; the primary CVE chain is the restored PPP "connect" option reaching root pppd.
+
+Reproduction status:
+Full real-device reproduction is not yet completed. QEMU full-system validation was assessed but not executed in the current workspace because qemu-system-aarch64 is not installed and the official BE800/BE550 images are TP-Link fw-type:Cloud high-entropy packages. Local binwalk/segment probes did not recover a usable production root filesystem or kernel. Current evidence is GPL source evidence plus local semantic verification. Real-device evidence can be provided later by uploading the crafted backup through the authenticated web UI, applying/restarting networking or bringing up the restored PPP interface, and capturing the marker file.
+
+Important validation note:
+The default PPPoE path should not be assumed affected by this exact "connect" chain without separate runtime proof, because PPPoE replaces the normal tty-channel connect function. The PoC is for an added "proto ppp" interface. The GPL LuCI tree also contains a possible NIU restore route without a local sysauth binding, but production reachability is unconfirmed because production rootfs extraction is not available and product configuration may not install that module. I am not claiming unauthenticated RCE at this stage.
+
+Evidence repository:
+https://github.com/meishigana/CVE/tree/main/tplink_be800_be550_restore_ppp_connect_rce_2026-06-16
+
+Repository integrity file:
+https://github.com/meishigana/CVE/blob/main/SHA256SUMS.txt
+
+Key evidence file SHA256 values:
+f891141031d08284425bd494646a3a1445b56e5904c54d6fe5c64d7377c0fca0  technical_report.md
+e0ea4d95342d81c70025b8b0cd0dff9e456fc05e3fe9655b3cdb9a9aeb8b0f9c  cve_submission_draft.md
+bf61274c0c8687cdef1e9804c60588fcfcb6a65ddb96d4e36fd66720d54549b3  poc_reproduction.md
+048ea1091a4c53258e679d2e69f267a45e864dcdaf47828f487036ad96f41006  duplicate_check.md
+b6fbbca3572d8ae8f379e32ac8fba7a4728e2d965f2219e29ed26c79a48fa753  evidence_index.md
+ec0d694a0e53ac82628eeb3e364db9c9360bdc272319176068a8e1d185ae3d21  verify_ppp_be800_output.txt
+0012686a52fad8bf47b5dce168a16270e7cdb5d4abd67fc305d9b540341962e7  verify_ppp_be550_output.txt
+82f1807e1b4f287cd1f65e13f0759db8bd804aeaba8a487f02625c4eab43bb4e  source_report_restore_ppp_connect_rce.md
+8c778c99c5a339d863c6fcf2d6d7813440ed3b057b450cf38ccb63d83cf1acdb  firmware_hashes.txt
+241a2dd976c56c6324ee4531b8e6c252291567475285584ebf7c64f2f9866ab8  verify_tplink_be_restore_ppp_connect_rce_chain_2026_06_16.sh
+
+Duplicate check:
+Known related TP-Link public issues include OpenVPN/config import or restore vulnerabilities, such as CVE-2026-30815 for Archer AX53 and related TP-Link FAQ entries. I did not find a public record explicitly covering Archer BE800 v1 firmware 1.4.1 Build 20260401 or Archer BE550 v2 / BE9300 v2 firmware 1.3.1 Build 20260403 with the restore-to-PPP connect chain or the broader restore-to-rootfs write primitive.
+
+No existing CVE was found that covers this exact combination:
+TP-Link Archer BE800 v1 1.4.1 Build 20260401 / Archer BE550 v2 or BE9300 v2 1.3.1 Build 20260403 + unsafe configuration restore extraction under "/" + restored /etc/config/network + PPP connect command execution through pppd.
+
+Duplicate or merge risk remains because the root cause is similar to broader unsafe restore/import vulnerability families.
+
+Suggested CVSS v3.1:
+CVSS:3.1/AV:A/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H = 6.8 Medium
+
+CVSS rationale:
+This score is conservative. It assumes the attacker needs valid administrator credentials and access to the management interface from the local/adjacent network. If the management interface is reachable from a broader network, or if the CNA treats web-admin-to-device-root as a stronger privilege boundary, the score may be adjusted.
+
+Suggested remediation:
+- Do not extract uploaded backup archives directly under "/".
+- Extract to a temporary directory and validate the complete archive manifest first.
+- Use a strict backup-file whitelist.
+- Reject absolute paths, ".." path components, symlinks, hardlinks, device nodes, startup-controlled paths, and service execution hooks.
+- Do not preserve attacker-controlled ownership, mode, or special-file metadata.
+
+Disclosure plan:
+I am requesting coordinated handling and a CVE assignment. I do not plan to publish full exploit details before vendor coordination. A reasonable coordinated disclosure timeline would be 90 days from vendor acknowledgement, unless the vendor requests a different schedule or confirms that a fix is available earlier.
+
+Please let me know if additional information, a minimized PoC, packet capture, real-device reproduction, or full-system QEMU reproduction is required.
+
+Best regards,
+Chuanteng Su

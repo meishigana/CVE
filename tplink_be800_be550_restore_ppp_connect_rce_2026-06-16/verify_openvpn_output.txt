@@ -1,0 +1,6 @@
+archive=/tmp/tplink_be_restore_openvpn_rce_chain_3735/malicious_restore_openvpn.tgz
+root=/tmp/tplink_be_restore_openvpn_rce_chain_3735/root
+wrote=/tmp/tplink_be_restore_openvpn_rce_chain_3735/root/etc/config/openvpn
+wrote=/tmp/tplink_be_restore_openvpn_rce_chain_3735/root/etc/openvpn/poc_up.sh
+generated_conf=/tmp/tplink_be_restore_openvpn_rce_chain_3735/openvpn-server.conf
+bb316c0b62a11b3d4a094be30e9d2c31747e486310e3b9568bf799058980a1f9  /tmp/tplink_be_restore_openvpn_rce_chain_3735/malicious_restore_openvpn.tgz
