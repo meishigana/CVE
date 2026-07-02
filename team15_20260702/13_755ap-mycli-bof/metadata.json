@@ -1,0 +1,13 @@
+﻿{
+    "title":  "CVE-XXXX-XXXX: TEW-755AP sbin/mycli UCI Wifi Config Stack Overflow",
+    "vendor":  "TRENDnet",
+    "product":  "TRENDnet TEW-755AP Access Point",
+    "firmware":  "version per source report",
+    "affected_binary":  "sbin/mycli",
+    "vulnerability_type":  "Stack-based Buffer Overflow / RCE",
+    "cwe":  "CWE-121",
+    "cvss":  "9.8 Critical",
+    "source_directory":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-755ap-mycli-stackoverflow",
+    "generated_on":  "2026-07-02",
+    "submission_status":  "draft-ready; duplicate check recommended before external filing"
+}

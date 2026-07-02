@@ -1,0 +1,13 @@
+﻿{
+    "title":  "CVE-XXXX-XXXX1: TEW-WLC100P netifd DHCP blobmsg Stack Overflow",
+    "vendor":  "TRENDnet",
+    "product":  "TRENDnet TEW-WLC100P Wireless Controller",
+    "firmware":  "v12.07b01",
+    "affected_binary":  "sbin/netifd",
+    "vulnerability_type":  "Stack-based Buffer Overflow / RCE",
+    "cwe":  "CWE-121",
+    "cvss":  "9.8 Critical",
+    "source_directory":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-wlc100p-netifd",
+    "generated_on":  "2026-07-02",
+    "submission_status":  "draft-ready; duplicate check recommended before external filing"
+}

@@ -1,0 +1,167 @@
+﻿[
+    {
+        "No":  1,
+        "Package":  "01_wlc100p-netifd",
+        "Title":  "CVE-XXXX-XXXX1: TEW-WLC100P netifd DHCP blobmsg Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  3,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-wlc100p-netifd"
+    },
+    {
+        "No":  2,
+        "Package":  "02_wlc100-nginx",
+        "Title":  "CVE-XXXX-XXXX2: TEW-WLC100 nginx HTTP Header Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  5,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-wlc100-nginx"
+    },
+    {
+        "No":  3,
+        "Package":  "03_821dap-mycli-time-overflow",
+        "Title":  "CVE-XXXX-XXXX3: TEW-821DAP mycli Time/Syslog UCI Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  96,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-821dap-mycli-time-syslog-overflow"
+    },
+    {
+        "No":  4,
+        "Package":  "04_821dap-mycli-wifi-overflow",
+        "Title":  "CVE-XXXX-XXXX4: TEW-821DAP mycli Wifi VAP/MAC Filter UCI Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  96,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-821dap-mycli-wifi-vap-overflow"
+    },
+    {
+        "No":  5,
+        "Package":  "05_821dap-ssi-wan-overflow",
+        "Title":  "CVE-XXXX-XXXX5: TEW-821DAP cgi/ssi WAN Config Stack Overflow + Command Injection",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  80,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-821dap-ssi-wan-config-overflow"
+    },
+    {
+        "No":  6,
+        "Package":  "06_821dap-ssi-remote-cmdi",
+        "Title":  "CVE-XXXX-XXXX6: TEW-821DAP cgi/ssi REMOTE_ADDR Command Injection",
+        "Type":  "Command Injection / RCE",
+        "CWE":  "CWE-77",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  80,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-821dap-ssi-remote-command-injection"
+    },
+    {
+        "No":  7,
+        "Package":  "07_751wic-apd-time-cmdi",
+        "Title":  "CVE-XXXX-XXXX9: TV-IP751WIC alphapd Time Command Injection",
+        "Type":  "Command Injection / RCE",
+        "CWE":  "CWE-77",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  137,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-751wic-alphapd-time-command-injection"
+    },
+    {
+        "No":  8,
+        "Package":  "08_751wic-apd-wifi-key-overflow",
+        "Title":  "CVE-XXXX-XXXX10: TV-IP751WIC alphapd Wifi Key/SSID Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  137,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-751wic-alphapd-wifi-key-overflow"
+    },
+    {
+        "No":  9,
+        "Package":  "09_751wic-apd-password-overflow",
+        "Title":  "CVE-XXXX-XXXX11: TV-IP751WIC alphapd Multi-Password Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  137,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-751wic-alphapd-password-overflow"
+    },
+    {
+        "No":  10,
+        "Package":  "10_823dru-rc-bof",
+        "Title":  "CVE-XXXX-XXXX: TEW-823DRU sbin/rc NVRAM strcpy Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  553,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-823dru-rc-stackoverflow"
+    },
+    {
+        "No":  11,
+        "Package":  "11_823dru-rc-cmdi",
+        "Title":  "CVE-XXXX-XXXX: TEW-823DRU sbin/rc NVRAM Command Injection",
+        "Type":  "Command Injection / RCE",
+        "CWE":  "CWE-77",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  553,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-823dru-rc-command-injection"
+    },
+    {
+        "No":  12,
+        "Package":  "12_823dru-ssi-cmdi",
+        "Title":  "CVE-XXXX-XXXX: TEW-823DRU cgi/ssi Multi-Vector Command Injection",
+        "Type":  "Command Injection / RCE",
+        "CWE":  "CWE-77",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  553,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-823dru-ssi-command-injection"
+    },
+    {
+        "No":  13,
+        "Package":  "13_755ap-mycli-bof",
+        "Title":  "CVE-XXXX-XXXX: TEW-755AP sbin/mycli UCI Wifi Config Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  374,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-755ap-mycli-stackoverflow"
+    },
+    {
+        "No":  14,
+        "Package":  "14_755ap-ssi-cmdi",
+        "Title":  "CVE-XXXX-XXXX: TEW-755AP cgi/ssi Multi-Vector Command Injection",
+        "Type":  "Command Injection / RCE",
+        "CWE":  "CWE-77",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  374,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-755ap-ssi-command-injection"
+    },
+    {
+        "No":  15,
+        "Package":  "15_755ap-ssi-bof",
+        "Title":  "CVE-XXXX-XXXX: TEW-755AP cgi/ssi WAN Config Stack Overflow",
+        "Type":  "Stack-based Buffer Overflow / RCE",
+        "CWE":  "CWE-121",
+        "CVSS":  "9.8 Critical",
+        "PoC":  1,
+        "Evidence":  374,
+        "Source":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-755ap-ssi-stackoverflow"
+    }
+]

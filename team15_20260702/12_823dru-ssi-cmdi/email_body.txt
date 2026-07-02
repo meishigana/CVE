@@ -1,0 +1,16 @@
+﻿Subject: Security disclosure: CVE-XXXX-XXXX: TEW-823DRU cgi/ssi Multi-Vector Command Injection
+
+Hello Security Team,
+
+We would like to report a security vulnerability affecting TRENDnet TEW-823DRU AC3200 Router (v1.1.02b01). The affected component is cgi/ssi. Based on our analysis, the issue is a Command Injection / RCE (CWE-77) with an estimated severity of 9.8 Critical.
+
+The attached package contains:
+- technical_report.md with the detailed vulnerability analysis,
+- poc/ with reproduction material,
+- evidence/ with supporting FirmRec or symbolic-execution logs,
+- evidence_index.md and metadata.json for reviewer navigation.
+
+Please confirm receipt and advise on your disclosure process and tracking identifier. We can provide additional reproduction details if needed.
+
+Regards,
+Research Team

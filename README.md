@@ -13,6 +13,7 @@ The materials are intended to help vendors, CNAs, and security coordinators revi
 | NETGEAR R7000 firmware V1.0.9.18_1.2.27 | ReadyCLOUD `leafp2p_username` to `comm.sh` OS command injection | Prepared for CVE request | `netgear_r7000_readycloud_leafp2p_comm_rce_2026-06-08/` |
 | TOTOLINK X5000R firmware 2350/2415 | `exportOvpn` pre-authenticated OpenVPN file disclosure and suffix-constrained path traversal | Prepared for CVE request | `totolink_x5000r_exportovpn_file_disclosure_2026-06-09/` |
 | ASUS RT-AX86U Pro firmware 3.0.0.6.102_37436 | `upload_server_ipsec_cert.cgi` authenticated IPsec certificate archive symlink traversal arbitrary file write | Prepared for CVE request | `asus_rt_ax86u_pro_ipsec_cert_symlink_write_2026-06-09/` |
+| TRENDnet TEW-WLC100/WLC100P, TEW-821DAP, TV-IP751WIC, TEW-823DRU, TEW-755AP | 15 stack overflow and command injection findings with PoC/evidence packages | Prepared for VulnDB/CVE review | `team15_20260702/` |
 
 ## Repository Integrity
 

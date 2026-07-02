@@ -1,0 +1,13 @@
+﻿{
+    "title":  "CVE-XXXX-XXXX3: TEW-821DAP mycli Time/Syslog UCI Stack Overflow",
+    "vendor":  "TRENDnet",
+    "product":  "TRENDnet TEW-821DAP Access Point",
+    "firmware":  "v2.2.01b05",
+    "affected_binary":  "sbin/mycli",
+    "vulnerability_type":  "Stack-based Buffer Overflow / RCE",
+    "cwe":  "CWE-121",
+    "cvss":  "9.8 Critical",
+    "source_directory":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-821dap-mycli-time-syslog-overflow",
+    "generated_on":  "2026-07-02",
+    "submission_status":  "draft-ready; duplicate check recommended before external filing"
+}

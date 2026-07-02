@@ -1,0 +1,16 @@
+﻿Subject: Security disclosure: CVE-XXXX-XXXX: TEW-755AP sbin/mycli UCI Wifi Config Stack Overflow
+
+Hello Security Team,
+
+We would like to report a security vulnerability affecting TRENDnet TEW-755AP Access Point (version per source report). The affected component is sbin/mycli. Based on our analysis, the issue is a Stack-based Buffer Overflow / RCE (CWE-121) with an estimated severity of 9.8 Critical.
+
+The attached package contains:
+- technical_report.md with the detailed vulnerability analysis,
+- poc/ with reproduction material,
+- evidence/ with supporting FirmRec or symbolic-execution logs,
+- evidence_index.md and metadata.json for reviewer navigation.
+
+Please confirm receipt and advise on your disclosure process and tracking identifier. We can provide additional reproduction details if needed.
+
+Regards,
+Research Team

@@ -1,0 +1,13 @@
+﻿{
+    "title":  "CVE-XXXX-XXXX6: TEW-821DAP cgi/ssi REMOTE_ADDR Command Injection",
+    "vendor":  "TRENDnet",
+    "product":  "TRENDnet TEW-821DAP Access Point",
+    "firmware":  "v2.2.01b05",
+    "affected_binary":  "cgi/ssi",
+    "vulnerability_type":  "Command Injection / RCE",
+    "cwe":  "CWE-77",
+    "cvss":  "9.8 Critical",
+    "source_directory":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-821dap-ssi-remote-command-injection",
+    "generated_on":  "2026-07-02",
+    "submission_status":  "draft-ready; duplicate check recommended before external filing"
+}

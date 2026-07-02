@@ -1,0 +1,13 @@
+﻿{
+    "title":  "CVE-XXXX-XXXX2: TEW-WLC100 nginx HTTP Header Stack Overflow",
+    "vendor":  "TRENDnet",
+    "product":  "TRENDnet TEW-WLC100 Wireless Controller",
+    "firmware":  "v1v2.07b01",
+    "affected_binary":  "usr/nginx/sbin/nginx",
+    "vulnerability_type":  "Stack-based Buffer Overflow / RCE",
+    "cwe":  "CWE-121",
+    "cvss":  "9.8 Critical",
+    "source_directory":  "E:\\competition\\漏洞\\vulns\\vulns\\vuln-wlc100-nginx",
+    "generated_on":  "2026-07-02",
+    "submission_status":  "draft-ready; duplicate check recommended before external filing"
+}
